@@ -1,0 +1,578 @@
+
+
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<meta NAME="GENERATOR" CONTENT="Oracle JDeveloper">
+<link REL ="stylesheet" TYPE="text/css" HREF="../../lib/jsp/pucp.css">
+<meta charset="utf-16">
+<title>
+Mis Cursos
+</title>
+
+<link rel="stylesheet" type="text/css" href="./css/bootstrap.css">	
+<link rel="stylesheet" type="text/css" href="./css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="./css/jquery.css">
+<link rel="stylesheet" type="text/css" href="./css/pucp.css">
+<link rel="stylesheet" type="text/css" href="./css/publi.css">
+
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/jquery-ui.js"></script>
+<script type="text/javascript" src="./bootstrap.js"></script>
+<script type="text/javascript" language="JavaScript1.2" src="./js/ocr.js"> </script>
+<script language="JavaScript1.2" src="./js/nosabo.js"> </script>
+<script type="text/javascript" language="JavaScript1.2" src="./js/general.js"> </script>
+
+<script language="JavaScript1.1" src="./js/notas.js"> </script>
+<script language="JavaScript1.1" src="./js/horarios.js"> </script>
+<script language="JavaScript1.1" src="./js/prematri.js"> </script>
+
+
+
+
+<style>
+
+.celdaPanel{
+	min-width: 70px;
+	height: 16px;
+}
+
+.celdaPanel p {
+    margin-bottom: 1px;
+}
+
+.celdaPanel table {
+    border-spacing: 0px;
+    padding:0;
+}
+
+.celdaPanel table td{
+    height: 12px;
+    padding: 0;
+}
+
+.divOpcionesSuperiores{
+	display: inline-block;
+}
+
+
+.grupoOpcionesSuperior{
+	min-width: 200px;
+	float: left;
+	overflow: auto;
+}
+
+
+
+.ocultarSiempre{
+	display:none !important;
+}
+
+.opcionCabecera{
+	border-bottom: 1px solid;
+	border-color: #ccc;
+}
+
+.opcionCabecera.opcionActiva{
+	display: none;
+}
+
+.cabeceraTablaData{
+	padding-left: 0px;
+    padding-right: 0px;
+}
+
+.tablaData{
+	padding-left: 0px;
+    padding-right: 0px;
+    margin-bottom: 10px;
+}
+
+.grupoOpcionesSuperior a {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 700px) {
+	.mostrarOpcionalMovilOculto{
+		display: none;
+	}
+	.grupoOpcionesSuperior{
+		width: 100%;
+		margin-top:5px;
+		margin-bottom:5px;
+	}    
+	.divBotonExpandir{
+		float: right;
+		width:10%;
+		padding-top: 10px;
+	}
+	
+	.botonExpandir{
+		width:100%;
+		height:100%;
+		max-height: 30px;
+	    background: url(/pucp/ocr/ocwmcurs/jsp/images/FlechaBlancaBordePlomoID.png);
+	    background-size: 25px 25px;
+	    background-repeat: no-repeat;
+	    border: 0;
+	    margin-bottom: 5px;
+	}
+	
+	.botonReducir{
+		width:100%;
+		height:100%;
+		max-height: 30px; 
+	    background: url(/pucp/ocr/ocwmcurs/jsp/images/FlechaBlancaBordePlomoDI.png);
+	    background-size: 25px 25px;
+	    background-repeat: no-repeat;
+	    border: 0;
+	    margin-bottom: 5px;
+	}
+	
+	.enlacesOpcionesSuperior{
+		width: 90%;
+		float: left;
+	}
+	
+	.soloDesktop{
+		display:none;
+	}
+	.celdaPanel p {
+    	margin-bottom: 2px;
+	}
+	
+	.caret {
+	    border-left: 8px solid transparent;
+	    border-right: 8px solid transparent;
+	    border-top: 8px solid #ffffff;
+	}
+}
+
+@media screen and (min-width: 700px) {	
+	.grupoOpcionesSuperior{
+		width: auto;
+		margin-right: 30px;
+	}
+	.soloMovil{
+		display:none;
+	}
+}
+
+</style>
+
+
+
+
+
+
+<script language="JavaScript1.2">
+
+function fCargaCursosMatri ( objeto )
+{
+  //alert(objeto.options[objeto.selectedIndex].value);
+  var form = document.formresultado;
+
+  form.cicloAnoMatri.value = objeto.options[objeto.selectedIndex].value.substring(0,4);
+  form.cicloMatri.value = objeto.options[objeto.selectedIndex].value.substring(5,7);
+  form.tipoCicloMatri.value = objeto.options[objeto.selectedIndex].value.substring(8,10);
+
+  procesarCambioPestana("tabMatriculado", null, "1");
+};
+
+function fCargaCursosDict ( objeto )
+{
+  //alert(objeto.options[objeto.selectedIndex].value);
+  var form = document.formresultado;
+  //form.accion.value='Ingresar';
+
+  form.cicloAnoDict.value = objeto.options[objeto.selectedIndex].value.substring(0,4);
+  form.cicloDict.value = objeto.options[objeto.selectedIndex].value.substring(5,7);
+  form.tipoCicloDict.value = objeto.options[objeto.selectedIndex].value.substring(8,10);
+  
+  //form.submit();
+  procesarCambioPestana("tabDictando", null, "1");
+          
+};
+
+function fCargaTipocicloAdmCurso ( objeto )
+{
+  var form = document.formresultado;
+  form.sCicloAnoAdmCurso.value = "";
+  form.sCicloAdmCurso.value = "";
+  form.sTipoCicloAdmCurso.value = objeto.options[objeto.selectedIndex].value;
+  
+  procesarCambioPestana("tabCursos", null, "1");
+          
+};
+
+function fCargaAdmCurso ( objeto )
+{
+  var form = document.formresultado;
+  var codCicloAdmCurso=objeto.options[objeto.selectedIndex].value;
+  form.sCicloAnoAdmCurso.value = codCicloAdmCurso.substring(0, 4);
+  form.sCicloAdmCurso.value = codCicloAdmCurso.substring(4, 6);
+  
+  
+  procesarCambioPestana("tabCursos", null, "1");
+          
+};
+
+function fCargaAdmEspeci ( objeto )
+{
+  var form = document.formresultado;
+  form.sTipoCicloAdmEspeci.value = objeto.options[objeto.selectedIndex].value;
+
+  procesarCambioPestana("tabCursos", null, "1");
+          
+};
+
+
+function fMuestraEventos (  )
+{
+
+  var url = "http://www.pucp.edu.pe/";
+  // luego el url debera contener los parametros de la aplicacion llamada
+  // armar el url en el jsp(con bean de datos) y enviarlo como parametro
+  // a esta funcion.
+  document.location.href=url;
+  
+};
+
+function fMuestraDocumentos ( clave )
+{
+
+  var url = "javascript:ExplorarDocumentosCurso('" + clave + "');";
+  
+  // luego el url debera contener los parametros de la aplicacion llamada
+  // armar el url en el jsp(con bean de datos) y enviarlo como parametro
+  // a esta funcion.
+  document.location.href=url;
+  
+};
+
+function ExplorarDocumentosCurso(clave)
+{
+var indExploracion = '2';
+var indLectura = '1';
+session=document.formresultado.session.value;
+window.location="/pucp/pubweb/puwpubli/puwpubli;jsessionid="+session+"?accion=ExplorarDocumentos&clave="+
+		  clave + "&indExploracion=" + indExploracion+ "&indLectura=" + indLectura;
+}
+
+function EnviaMailNoPrinc(indicaprinci, url, tipohor)
+{
+  if (indicaprinci=="0") {
+
+      alert ( 'Se enviará el e-mail a alumnos matriculados en el curso. Sólo se consideran los horarios de clase asociados a las prácticas y exámenes a los que Ud. pertenece.');
+ 
+  }
+  session=document.formresultado.session.value;
+  document.location.href=url;
+}
+
+
+</script>
+
+<script>
+$( document ).ready(function() {
+  primeraPestana();
+});
+</script>
+
+</head>
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Giancarlo Calderón - 25/09/2017: Se agrega nueva pestaña para mostrar las actividades de educación continua pendientes de matrícula -->
+
+
+
+  
+    
+    <div class="btn-group" align="right" width="100%" style="float:right; margin-bottom: 10px; margin-top: 10px;">
+	    <div class="btn-group">
+		    <button type="button" role="link" class="btn btn-default pucpSubMenu" onclick="javascript:location.href='/pucp/prematri/pmwprein/pmwprein?accion=MostrarPreinPremat'">
+			    Preinscripción
+			</button>
+		</div>	
+	</div>
+    
+
+
+ 
+<form action="/pucp/ocr/ocwmcurs/ocwmcurs" method="get" name="formresultado">
+<input type="hidden" name="accion" value="Ingresar">
+<input type="hidden" name="persona" value="20212126">
+<input type="hidden" name="cicloAnoMatri" value="2023">
+<input type="hidden" name="cicloMatri" value="01">
+<input type="hidden" name="tipoCicloMatri" value="00">
+<input type="hidden" name="cicloAnoDict" value="">
+<input type="hidden" name="cicloDict" value="">
+<input type="hidden" name="tipoCicloDict" value="">
+<input type="hidden" name="panel" value="">
+<input type="hidden" name="sCicloAnoAdmCurso" value="">
+<input type="hidden" name="sCicloAdmCurso" value="">
+<input type="hidden" name="sTipoCicloAdmCurso" value="">
+<input type="hidden" name="sTipoCicloAdmEspeci" value="">
+<input type="hidden" name="esCambioPestana" value="1">
+<input type="hidden" name="sPestana" value="">
+
+<input type="hidden" name="session" value="00003JTe_gROWz7x3RCkWKwsGVU:1efkird97" >
+
+
+
+<div id="divPrincipal" class="container-fluid" style="margin-top:20px;">	
+	<div class="cabecera" style="margin-top: 19px; margin-bottom: 5px">
+		<ul>
+			<li>
+				<a style="float:right;" class="PucpLink" href="http://agora.pucp.edu.pe/tutorial/campusvirtual/respuesta.php?id=1285"  target="_blank" >Acerca de PUCP Móvil</a><font style="float:right;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><a style="float:right;" class="PucpLink" href="https://logindia.pucp.edu.pe/cursos.php"  target="_blank" >Ir a PAIDEIA</a>
+				<label class="pucpTitulo">Cursos y actividades academicas</label>
+			</li>
+			<li><label class="pucpInfReg"> APARI SANCHEZ, FIDEL MOISES (20212126)</label></li>
+			
+		</ul>
+	</div>
+
+
+
+
+
+
+
+
+
+
+	<ul class="nav nav-tabs tabsGeneral soloDesktop " id="tabsPublicidad">
+		
+  			<li class='active'><a data-toggle="tab" id="tabMatriculado" href="#divMatriculado" value="1"><b>Matriculado</b></a></li>
+  			
+  			
+  		
+  		
+  			<li ><a data-toggle="tab" id="tabParticipando" href="#divParticipando" value="3"><b>Participando</b></a></li>
+  			
+  		
+  		
+		
+		
+	</ul>
+
+	
+	<div class="dropdown soloMovil" style="width: 100%;">
+		<button class="btn btn-default dropdown-toggle " type="button" id="opcionesMenuCurAct" style="width: 100%; text-decoration: none;border-color: #FFFFFF;background-color: #4A96AC;color: #FFFFFF;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			
+				<b></b>
+				<span class="caret"></span>
+			
+		</button>
+		<ul class="dropdown-menu " aria-labelledby="opcionesMenuCurAct" style="width: 100%;">
+			
+				<li id="liOpcionTabMatriculado" class="opcionCabecera opcionActiva" ><a id="opcionTabMatriculado" href="javascript:realizaCambioPestana('tabMatriculado');" style="width: 100%; text-align: center;"><b>Matriculado</b></a></li>
+			
+			
+			
+				<li id="liOpcionTabParticipando" class="opcionCabecera "><a id="opcionTabParticipando" href="javascript:realizaCambioPestana('tabParticipando');" style="width: 100%; text-align: center;"><b>Participando</b></a></li>
+			
+			
+			
+			
+		</ul>
+	</div>
+	
+	
+	<div class="tab-content">
+	
+		<div id="divMatriculado" role="tabpanel" class="tab-pane fade in active">
+			<br>
+			<div class="row">
+				<div class="col-md-12">
+					<div id="cabeceraMatriculadoRegulares" class="cabeceraTablaData">
+						
+					</div>
+					<div id="tablaMatriculadoRegulares" class="table-responsive col-md-12 tablaData">
+						
+					</div>
+					<div id="cabeceraMatriculadoNoRegulares" class="cabeceraTablaData">
+						
+					</div>
+					<div id="tablaMatriculadoNoRegulares" class="table-responsive col-md-12 tablaData">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	
+		
+	
+		<div id="divParticipando" role="tabpanel" class="tab-pane fade ">
+			<br>
+			<div class="row">
+				<div class="col-md-12">
+					<div id="cabeceraParticipando" class="cabeceraTablaData">
+						
+					</div>
+					<div id="tablaParticipando" class="table-responsive col-md-12 tablaData">
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	
+		
+	
+	
+	</div>
+</div>
+
+<div class="tab-content">
+	
+    <div id="divMatriculado" role="tabpanel" class="tab-pane fade active in">
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="cabeceraMatriculadoRegulares" class="cabeceraTablaData"><div class="col-md-12 pucpTablaSubTitulo divOpcionesSuperiores"><div class="enlacesOpcionesSuperior"><div class="grupoOpcionesSuperior">      <font class="pucpSubTitulo soloDesktop"><b>MATRICULADO</b></font>      <font class="pucpSubTitulo soloDesktop"> en <b>ciclo</b></font>      <font class="pucpSubTitulo soloMovil"><b> Ciclo</b></font>      <b><font class="pucpCampo">      <select class="pucpCampo" size="1" name="cmbCicloMatri" onchange="fCargaCursosMatri(this)">               <option selected="" value="2023-01-00"> 2023-1 </option>               <option value="2023-00-00"> 2023-0 </option></select>      </font></b></div><div class="grupoOpcionesSuperior">      <font class="pucpSubTitulo">5 curso(s) </font><font class="pucpSubTitulo">&nbsp;(20.00 creditos)</font></div><div class="grupoOpcionesSuperior"><font class="pucpSubTitulo"><b><a style="color: #FFFFFF" href="/pucp/encdocen/edwendoc/edwendoc?accion=VerEncuestas" >Encuestas de opinion</a></b></font><font class="pucpSubTitulo">&nbsp;&nbsp;</font><font class="pucpSubTitulo"><b><a style="color: #FFFFFF" href="javascript:NotasParcialesAlumno(&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" >Notas</a></b></font><font class="pucpSubTitulo">&nbsp;&nbsp;&nbsp;</font>        <font class="pucpSubTitulo"><b><a style="color: #FFFFFF" href="/pucp/horarios/howhorac/howhorac?accion=MostrarResultadosHorAcad&amp;alumno=20212126&amp;cicloano=2023&amp;ciclo=01&amp;tipociclo=00&amp;facultad=&amp;rama=&amp;checkclases=1&amp;checkpra=1&amp;checklab=1&amp;checkexaotros=1&amp;indicasesiones=1&amp;formatedlistacursos=" >Horario</a></b></font></div></div><div class="soloMovil divBotonExpandir"><button type="button" class="botonExpandir" ></button></div></div></div>
+                <div id="tablaMatriculadoRegulares" class="table-responsive col-md-12 tablaData"><table width="100%" id="tablaCursosRegulares">  <tbody><tr>    <td class="pucpCeldaTitulo celdaPanel" width="5%" align="center" valign="center">Clave</td>    <td class="pucpCeldaTitulo celdaPanel" width="30%" align="center" valign="center">Nombre del curso</td>    <td class="pucpCeldaTitulo celdaPanel mostrarOpcionalMovilOculto" width="5%" align="center" valign="center">Créditos</td>    <td class="pucpCeldaTitulo celdaPanel mostrarOpcionalMovilOculto" width="20%" align="center" valign="center">U.Acad.</td>    <td class="pucpCeldaTitulo celdaPanel mostrarOpcionalMovilOculto" width="2%" align="center" valign="center">Vez</td>    <td class="pucpCeldaTitulo celdaPanel mostrarOpcionalMovilOculto" width="7%" align="center" valign="center">Tipo H.</td>    <td class="pucpCeldaTitulo celdaPanel mostrarOpcionalMovilOculto" width="6%" align="center" valign="center">Horario</td>    <td class="pucpCeldaTitulo celdaPanel mostrarOpcionalMovilOculto" width="26%" align="center" valign="center">Docente</td>      <td class="pucpCeldaTitulo celdaPanel mostrarOpcionalMovilOculto" width="1%" align="center" valign="center">e-mail</td>  </tr>		<tr><td class="pucpCelda celdaPanel" width="5%" valign="top"><p align="Left">EST218</p></td><td class="pucpCelda celdaPanel" width="30%" valign="top"><p align="Left"><a class="pucpLinkCelda" href="javascript:PanelCursoPersonaCiclo(&quot;EST218&quot;,&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" style="text-decoration: none"  id="6756>1267<">ESTADISTICA PARA INGENIERIA</a></p><div id="6756"></div><a class="pucpLinkCelda" href="javascript:PanelCursoPersonaCiclo(&quot;EST218&quot;,&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" style="text-decoration: none"  id="6756>1267<"> </a><p></p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">  3.50</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="left">CIENCIAS E ING.</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%" valign="top"><p align="center">1</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">CLA</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0504</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center"><a class="pucpLinkCelda" href="javascript:PanelPersona(&quot;20112782&quot;);" style="text-decoration: none" >SILVESTRE VALER, JIM ROLAND</a></p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center"><a class="pucpLinkCelda" href="/pucp/correo/cowcrint/cowcrint;jsessionid=0000sAMoY0I1PGBEUYNPrm5Ie08:1fc8umola?accion=CrearMensaje&amp;dirPara=est2180504@agora.pucp.edu.pe&amp;dirCC=&amp;dirCCO=&amp;asunto=&amp;mensaje=" style="text-decoration: none" ><img src="./mail.gif" border="0" alt="est2180504@agora.pucp.edu.pe"></a></p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">PRA</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0504</p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">EXA</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0504</p></td></tr>		<tr><td class="pucpCelda celdaPanel" width="5%" valign="top"><p align="Left">INF246</p></td><td class="pucpCelda celdaPanel" width="30%" valign="top"><p align="Left"><a class="pucpLinkCelda" href="javascript:PanelCursoPersonaCiclo(&quot;INF246&quot;,&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" style="text-decoration: none"  id="6756>1267<">BASES DE DATOS</a></p><div id="6756"></div><a class="pucpLinkCelda" href="javascript:PanelCursoPersonaCiclo(&quot;INF246&quot;,&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" style="text-decoration: none"  id="6756>1267<"> </a><p></p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">  3.75</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="left">CIENCIAS E ING.</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%" valign="top"><p align="center">1</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">CLA</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0583</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center"><a class="pucpLinkCelda" href="javascript:PanelPersona(&quot;00009299&quot;);" style="text-decoration: none" >AGUILERA SERPA, CESAR AUGUSTO</a></p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center"><a class="pucpLinkCelda" href="/pucp/correo/cowcrint/cowcrint;jsessionid=0000sAMoY0I1PGBEUYNPrm5Ie08:1fc8umola?accion=CrearMensaje&amp;dirPara=inf2460583@agora.pucp.edu.pe&amp;dirCC=&amp;dirCCO=&amp;asunto=&amp;mensaje=" style="text-decoration: none" ><img src="./mail.gif" border="0" alt="inf2460583@agora.pucp.edu.pe"></a></p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">LAB</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0583</p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">EXA</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0583</p></td></tr>		<tr><td class="pucpCelda celdaPanel" width="5%" valign="top"><p align="Left">INF263</p></td><td class="pucpCelda celdaPanel" width="30%" valign="top"><p align="Left"><a class="pucpLinkCelda" href="javascript:PanelCursoPersonaCiclo(&quot;INF263&quot;,&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" style="text-decoration: none"  id="6756>1267<">ALGORITMIA</a></p><div id="6756"></div><a class="pucpLinkCelda" href="javascript:PanelCursoPersonaCiclo(&quot;INF263&quot;,&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" style="text-decoration: none"  id="6756>1267<"> </a><p></p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">  3.75</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="left">CIENCIAS E ING.</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%" valign="top"><p align="center">1</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">CLA</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0583</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center"><a class="pucpLinkCelda" href="javascript:PanelPersona(&quot;20072320&quot;);" style="text-decoration: none" >HUAMAN MONZON, FERNANDO MIGUEL</a></p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center"><a class="pucpLinkCelda" href="/pucp/correo/cowcrint/cowcrint;jsessionid=0000sAMoY0I1PGBEUYNPrm5Ie08:1fc8umola?accion=CrearMensaje&amp;dirPara=inf2630583@agora.pucp.edu.pe&amp;dirCC=&amp;dirCCO=&amp;asunto=&amp;mensaje=" style="text-decoration: none" ><img src="./mail.gif" border="0" alt="inf2630583@agora.pucp.edu.pe"></a></p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">LAB</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0583</p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">EXA</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0583</p></td></tr>		<tr><td class="pucpCelda celdaPanel" width="5%" valign="top"><p align="Left">1INF06</p></td><td class="pucpCelda celdaPanel" width="30%" valign="top"><p align="Left"><a class="pucpLinkCelda" href="javascript:PanelCursoPersonaCiclo(&quot;1INF06&quot;,&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" style="text-decoration: none"  id="6756>1267<">ESTRUCTURA DE DATOS Y PROGRAMACION METODICA</a></p><div id="6756"></div><a class="pucpLinkCelda" href="javascript:PanelCursoPersonaCiclo(&quot;1INF06&quot;,&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" style="text-decoration: none"  id="6756>1267<"> </a><p></p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">  4.50</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="left">CIENCIAS E ING.</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%" valign="top"><p align="center">1</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">CLA</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0583</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center"><a class="pucpLinkCelda" href="javascript:muestraDocentes(2023,&quot;01&quot;,&quot;00&quot;,&quot;1INF06&quot;,null,null);" style="text-decoration: none" >Ver docentes</a></p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center"><a class="pucpLinkCelda" href="/pucp/correo/cowcrint/cowcrint;jsessionid=0000sAMoY0I1PGBEUYNPrm5Ie08:1fc8umola?accion=CrearMensaje&amp;dirPara=1inf060583@agora.pucp.edu.pe&amp;dirCC=&amp;dirCCO=&amp;asunto=&amp;mensaje=" style="text-decoration: none" ><img src="./mail.gif" border="0" alt="1inf060583@agora.pucp.edu.pe"></a></p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">PRA</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0583</p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">EXA</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0583</p></td></tr>		<tr><td class="pucpCelda celdaPanel" width="5%" valign="top"><p align="Left">1INF08</p></td><td class="pucpCelda celdaPanel" width="30%" valign="top"><p align="Left"><a class="pucpLinkCelda" href="javascript:PanelCursoPersonaCiclo(&quot;1MAT09&quot;,&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" style="text-decoration: none"  id="6756>1267<">ALGEBRA MATRICIAL PARA INFORMATICA</a></p><div id="6756"></div><a class="pucpLinkCelda" href="javascript:PanelCursoPersonaCiclo(&quot;1MAT09&quot;,&quot;20212126&quot;,&quot;2023&quot;,&quot;01&quot;,&quot;00&quot;);" style="text-decoration: none"  id="6756>1267<"> </a><p></p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">  4.50</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="left">CIENCIAS E ING.</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%" valign="top"><p align="center">1</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">CLA</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0502</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center"><a class="pucpLinkCelda" href="javascript:PanelPersona(&quot;00005775&quot;);" style="text-decoration: none" >FIGUEROA SERRUDO, CHRISTIAM BERNARDO</a></p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center"><a class="pucpLinkCelda" href="/pucp/correo/cowcrint/cowcrint;jsessionid=0000sAMoY0I1PGBEUYNPrm5Ie08:1fc8umola?accion=CrearMensaje&amp;dirPara=1mat090402@agora.pucp.edu.pe&amp;dirCC=&amp;dirCCO=&amp;asunto=&amp;mensaje=" style="text-decoration: none" ><img src="./mail.gif" border="0" alt="1mat090402@agora.pucp.edu.pe"></a></p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">PRA</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0502</p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">DIR</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0502</p></td></tr>		<tr>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="2%"></td>          <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"><p align="center">EXA</p></td>              <td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="5%" valign="top"><p align="center">0502</p></td></tr></tbody></table><br></div>
+                <div id="cabeceraMatriculadoNoRegulares" class="cabeceraTablaData"></div>
+                <div id="tablaMatriculadoNoRegulares" class="table-responsive col-md-12 tablaData"></div>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+    <div id="divParticipando" role="tabpanel" class="tab-pane fade">
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="cabeceraParticipando" class="cabeceraTablaData"><div class="col-md-12 pucpTablaSubTitulo divOpcionesSuperiores"><div class="enlacesOpcionesSuperior"><div class="grupoOpcionesSuperior"><font class="pucpSubTitulo soloDesktop"><b>PARTICIPANDO </b></font><font class="pucpSubTitulo soloDesktop">en 2 actividad(es) o encuesta(s)</font><font class="pucpSubTitulo soloMovil">en 2 actividad(es) o encuesta(s)</font></div></div><div class="soloMovil divBotonExpandir"><button type="button" class="botonExpandir" onclick="toggleColumnas(&quot;tablaParticipando&quot;,this)"></button></div></div></div>
+                <div id="tablaParticipando" class="table-responsive col-md-12 tablaData"><table width="100%"><tbody><tr><td class="pucpCeldaTitulo celdaPanel" width="43%" align="center" valign="center">Nombre de la actividad o encuesta</td><td class="pucpCeldaTitulo celdaPanel" width="36%" align="center" valign="center">Unidad</td><td class="pucpCeldaTitulo celdaPanel mostrarOpcionalMovilOculto" width="20%" align="center" valign="center">Responsable/Docente</td><td class="pucpCeldaTitulo celdaPanel mostrarOpcionalMovilOculto" width="1" align="center" valign="center">e-mail</td></tr><tr><td class="pucpCelda celdaPanel" width="30%" valign="top"><p align="Left"><a class="pucpLinkCelda" href="/pucp/procpers/ppwproce/ppwproce?accion=PanelInscripcion&amp;codigo=20212126&amp;tipoproceso=076&amp;identificaproceso=255" style="text-decoration: none" >Eventos y actividades - Estudios Generales Ciencias</a></p></td><td class="pucpCelda celdaPanel" width="35%" valign="top"><p align="Left">Estudios Generales Ciencias</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%" valign="top"></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"></td></tr><tr><td class="pucpCelda celdaPanel" width="30%" valign="top"><p align="Left"><a class="pucpLinkCelda" href="/pucp/procpers/ppwproce/ppwproce?accion=PanelInscripcion&amp;codigo=20212126&amp;tipoproceso=076&amp;identificaproceso=258" style="text-decoration: none" >2023-1 Bienestar Ciencias</a></p></td><td class="pucpCelda celdaPanel" width="35%" valign="top"><p align="Left">Estudios Generales Ciencias</p></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="30%" valign="top"></td><td class="pucpCelda celdaPanel mostrarOpcionalMovilOculto" width="1%" valign="top"></td></tr></tbody></table></div>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+
+</div>
+
+
+
+</form>      
+
+
+
+
+
+ 
+
+
+
+
+<hr class="pucppiehr"> 
+	<div style="width: 100%;display: table;">
+		<div class="pucppiedesktop" style="width: 45%; text-align:left;">
+			<div style="width:100%">
+				<span class="pucpCampo" >
+					© Pontificia Universidad Católica del Perú
+				</span><br>
+				<span class="pucpCampo">
+					Av. Universitaria 1801, San Miguel
+				</span><br>
+				<span class="pucpCampo">
+					Lima-32 PERU      Telf. (511) 6262000
+				</span><br>			
+			</div>
+		</div>		
+		<div class="divhorapucp" style="display: table-cell; text-align:center;">
+			<div style="width:100%">
+				<span class="pucpCampo" id="horapucp">
+					<a class="pucpMailLink" href="javascript:top.mostrarHoraPUCPAlt()" id="linkHora">Hora PUCP</a>
+					<span id="textoHora" ></span>
+				</span>
+			</div>
+			<div class="pucppiemovil" style="width:100%">
+					
+				<input type="hidden" name="idConfContacto" value="null">
+				<input type="hidden" name="url__" value="/pucp/ocr/ocwmcurs/jsp/AccionIngresar.jsp">				
+				<span class="pucpCampo">consultas a: <a href="/pucp/correo/cowcrint/cowcrint;jsessionid=00003JTe_gROWz7x3RCkWKwsGVU:1efkird97?accion=CrearMensaje&dirPara=asistencia-dti@pucp.edu.pe&dirCC=&dirCCO=&asunto=&mensaje=" class="pucpMailLink" onMouseOver="self.status = ''; return true">asistencia-dti@pucp.edu.pe</a></span>
+				
+			</div>
+			<div class="pucppiemovil" style="width:100%">
+				<span class="pucpCampo" >
+					© Pontificia Universidad Católica del Perú
+				</span><br>
+				<span class="pucpCampo">
+					Av. Universitaria 1801, San Miguel
+				</span><br>
+				<span class="pucpCampo">
+					Lima-32 PERU      Telf. (511) 6262000
+				</span><br>			
+			</div>
+		</div>
+		
+		<div class="pucppiedesktop" style="width: 45%; text-align:right;">			
+			<div style="width:100%">
+				
+				<span class="pucpCampo">consultas a: <a href="/pucp/correo/cowcrint/cowcrint;jsessionid=00003JTe_gROWz7x3RCkWKwsGVU:1efkird97?accion=CrearMensaje&dirPara=asistencia-dti@pucp.edu.pe&dirCC=&dirCCO=&asunto=&mensaje=" class="pucpMailLink" onMouseOver="self.status = ''; return true">asistencia-dti@pucp.edu.pe</a></span>							
+				<br>
+				
+				<span class="pucpCampo">Direcci&oacute;n de Tecnolog&iacute;as de Informaci&oacute;n</span>
+			</div>			
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+</body>
+</html>
